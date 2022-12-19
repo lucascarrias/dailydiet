@@ -1,21 +1,23 @@
-import { Container, SubTitle, Title } from "./styles";
+import { Container, Content, DetailsArrow, SubTitle, Title } from "./styles";
 
 type Props = {
   value: number;
-}
+};
 
 const GOOD_PERCENTAGE = 70;
 
-export function Percent({value} : Props) {
-  const isGoodPercentage = value >= GOOD_PERCENTAGE;
+export function Percent({ value }: Props) {
+  const themeType = value >= GOOD_PERCENTAGE ? "PRIMARY" : "SECONDARY";
 
-  return <Container type={isGoodPercentage ?  "PRIMARY":"SECONDARY"}>
-    <Title>
-      {value}%
-    </Title>
+  return (
+    <Container type={themeType}>
+      <DetailsArrow type={themeType}/>
 
-    <SubTitle>
-      das refeições dentro da dieta
-    </SubTitle>
-  </Container>
+      <Content>
+        <Title>{value}%</Title>
+
+        <SubTitle>das refeições dentro da dieta</SubTitle>
+      </Content>
+    </Container>
+  );
 }

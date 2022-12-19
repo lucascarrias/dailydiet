@@ -6,6 +6,6 @@ import { Percent } from "@components/Percent/Index";
 export function Home(){
   return <Container>
     <Header />
-    <Percent value={59.14}/>
+    <Percent value={99.14}/>
   </Container>
 }
