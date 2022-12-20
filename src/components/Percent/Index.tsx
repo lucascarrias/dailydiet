@@ -2,19 +2,20 @@ import { Container, Content, DetailsArrow, SubTitle, Title } from "./styles";
 
 type Props = {
   value: number;
+  threshold?: number;
 };
 
-const GOOD_PERCENTAGE = 70;
-
-export function Percent({ value }: Props) {
-  const themeType = value >= GOOD_PERCENTAGE ? "PRIMARY" : "SECONDARY";
+export function Percent({ value, threshold = 70 }: Props) {
+  const themeType = value >= threshold ? "PRIMARY" : "SECONDARY";
 
   return (
     <Container type={themeType}>
       <DetailsArrow type={themeType}/>
 
       <Content>
-        <Title>{value}%</Title>
+        <Title>
+          {value}%
+        </Title>
 
         <SubTitle>das refeições dentro da dieta</SubTitle>
       </Content>
