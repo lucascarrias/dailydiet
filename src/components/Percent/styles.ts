@@ -1,7 +1,7 @@
 import { TouchableOpacity, View } from "react-native";
 import styled, { css } from "styled-components/native";
 
-import { ArrowUpRight } from "phosphor-react-native";
+import { ArrowLeft, ArrowUpRight } from "phosphor-react-native";
 
 export type PercentTypeStyleProps = "PRIMARY" | "SECONDARY";
 
@@ -11,7 +11,6 @@ type Props = {
 
 export const Container = styled(TouchableOpacity)<Props>`
   height: 100px;
-  margin-top: 24px;
   border-radius: 8px;
   background-color: ${({ theme, type }) =>
     type === "PRIMARY" ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
@@ -49,4 +48,13 @@ export const DetailsArrow = styled(ArrowUpRight).attrs<Props>(
   })
 )<Props>`
   margin-left: auto;
+`;
+
+export const BackArrow = styled(ArrowLeft).attrs<Props>(
+  ({ theme, type }) => ({
+    color: type == "PRIMARY" ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK,
+    size: theme.FONT_SIZE.XL,
+  })
+)<Props>`
+  margin-right: auto;
 `;

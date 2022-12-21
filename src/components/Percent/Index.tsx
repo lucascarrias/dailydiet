@@ -1,21 +1,35 @@
-import { Container, Content, DetailsArrow, SubTitle, Title } from "./styles";
+import {
+  BackArrow,
+  Container,
+  Content,
+  DetailsArrow,
+  SubTitle,
+  Title,
+} from "./styles";
 
 type Props = {
   value: number;
   threshold?: number;
+  actionArrow?: "SHOW" | "BACK";
 };
 
-export function Percent({ value, threshold = 70 }: Props) {
+export function Percent({
+  value,
+  threshold = 70,
+  actionArrow = "SHOW",
+}: Props) {
   const themeType = value >= threshold ? "PRIMARY" : "SECONDARY";
 
   return (
     <Container type={themeType}>
-      <DetailsArrow type={themeType}/>
+      {actionArrow === "SHOW" ? (
+        <DetailsArrow type={themeType} />
+      ) : (
+        <BackArrow type={themeType} />
+      )}
 
       <Content>
-        <Title>
-          {value}%
-        </Title>
+        <Title>{value}%</Title>
 
         <SubTitle>das refeições dentro da dieta</SubTitle>
       </Content>
