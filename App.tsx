@@ -10,6 +10,7 @@ import { Text } from "react-native";
 import theme from "./src/theme";
 import { Home } from "@screens/Home";
 import { Statistics } from "@screens/Statistics";
+import { NewMeal } from "@screens/NewMeal";
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Nunito_400Regular, Nunito_700Bold });
@@ -22,7 +23,7 @@ export default function App() {
         translucent
       />
 
-      {fontsLoaded ? <Statistics /> : <Text>Loading</Text>}
+      {fontsLoaded ? <NewMeal /> : <Text>Loading</Text>}
     </ThemeProvider>
   );
 }
