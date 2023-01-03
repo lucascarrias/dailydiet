@@ -24,6 +24,8 @@ export const Container = styled(TouchableOpacity)<Props>`
   align-items: center;
 
   border-width: 1px;
+
+  padding: 16px 24px;
 `;
 
 export const Title = styled(Text)<Props>`
@@ -32,10 +34,13 @@ export const Title = styled(Text)<Props>`
     color: ${type == "PRIMARY" ? theme.COLORS.WHITE : theme.COLORS.GRAY_600};
     font-family: ${theme.FONT_FAMILY.BOLD};
   `}
-  margin-left: 8px;
+
+  height: 20px;
 `;
 
 export const CreateIcon = styled(Plus).attrs<Props>(({ theme, type }) => ({
   size: theme.FONT_SIZE.XL,
   color: type == "PRIMARY" ? theme.COLORS.WHITE : theme.COLORS.GRAY_600,
-}))<Props>``;
+}))<Props>`
+  margin-right: 8px;
+`;

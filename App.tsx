@@ -11,6 +11,7 @@ import theme from "./src/theme";
 import { Home } from "@screens/Home";
 import { Statistics } from "@screens/Statistics";
 import { NewMeal } from "@screens/NewMeal";
+import { CreatedMeal } from "@screens/CreatedMeal";
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Nunito_400Regular, Nunito_700Bold });
@@ -23,7 +24,7 @@ export default function App() {
         translucent
       />
 
-      {fontsLoaded ? <NewMeal /> : <Text>Loading</Text>}
+      {fontsLoaded ? <CreatedMeal /> : <Text>Loading</Text>}
     </ThemeProvider>
   );
 }
