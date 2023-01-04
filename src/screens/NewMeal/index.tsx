@@ -1,27 +1,21 @@
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
+import { MealHeader } from "@components/MealHeader";
 import { SelectButton } from "@components/SelectButton";
 import {
-  BackArrow,
   ColumnSpace,
   Container,
   Content,
   DateTimeSubForm,
   DietSelectContainer,
   DietSelectInputContainer,
-  Header,
   Label,
-  Title,
 } from "./styles";
 
 export function NewMeal() {
   return (
     <Container>
-      <Header>
-        <BackArrow />
-
-        <Title>Nova refeição</Title>
-      </Header>
+      <MealHeader title="Nova refeição"/>
 
       <Content>
         <Input labelTitle="Nome" />

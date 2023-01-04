@@ -1,4 +1,4 @@
-import { Plus } from "phosphor-react-native";
+import { Plus, PencilSimpleLine, Trash } from "phosphor-react-native";
 import { TouchableOpacity, Text } from "react-native";
 import styled, { css } from "styled-components/native";
 
@@ -39,6 +39,20 @@ export const Title = styled(Text)<Props>`
 `;
 
 export const CreateIcon = styled(Plus).attrs<Props>(({ theme, type }) => ({
+  size: theme.FONT_SIZE.XL,
+  color: type == "PRIMARY" ? theme.COLORS.WHITE : theme.COLORS.GRAY_600,
+}))<Props>`
+  margin-right: 8px;
+`;
+
+export const EditIcon = styled(PencilSimpleLine).attrs<Props>(({ theme, type }) => ({
+  size: theme.FONT_SIZE.XL,
+  color: type == "PRIMARY" ? theme.COLORS.WHITE : theme.COLORS.GRAY_600,
+}))<Props>`
+  margin-right: 8px;
+`;
+
+export const DeleteIcon = styled(Trash).attrs<Props>(({ theme, type }) => ({
   size: theme.FONT_SIZE.XL,
   color: type == "PRIMARY" ? theme.COLORS.WHITE : theme.COLORS.GRAY_600,
 }))<Props>`
