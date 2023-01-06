@@ -7,11 +7,10 @@ import {
 } from "@expo-google-fonts/nunito";
 import { Text } from "react-native";
 
+import { Routes } from './src/routes';
+
 import theme from "./src/theme";
-import { Home } from "@screens/Home";
-import { Statistics } from "@screens/Statistics";
-import { NewMeal } from "@screens/NewMeal";
-import { CreatedMeal } from "@screens/CreatedMeal";
+
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Nunito_400Regular, Nunito_700Bold });
@@ -24,7 +23,7 @@ export default function App() {
         translucent
       />
 
-      {fontsLoaded ? <CreatedMeal /> : <Text>Loading</Text>}
+      {fontsLoaded ? <Routes /> : <Text>Loading</Text>}
     </ThemeProvider>
   );
 }

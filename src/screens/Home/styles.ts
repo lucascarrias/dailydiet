@@ -9,6 +9,7 @@ export const Container = styled(SafeAreaView)`
 
 export const CreateContainer = styled.View`
   width: 100%;
+  margin-bottom: 72px;
 `;
 
 export const SubTitle = styled.Text`
