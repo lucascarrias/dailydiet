@@ -1,11 +1,20 @@
+import { useNavigation  } from "@react-navigation/native";
+
 import { Card } from "@components/Card";
 import { Percent } from "@components/Percent/Index";
 import { BlankColumn, Container, Content, ContentTitle, Data, DataFooter } from "./styles";
 
 export function Statistics() {
+
+  const navigation = useNavigation();
+
+  function handleGoBack(){
+    navigation.navigate("home");
+  }
+
   return (
     <Container>
-      <Percent value={99.79} actionArrow="BACK" />
+      <Percent value={99.79} actionArrow="BACK" onPress={handleGoBack}/>
 
       <Content>
         <ContentTitle>Estatísticas gerais</ContentTitle>

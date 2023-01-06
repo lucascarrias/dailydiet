@@ -1,5 +1,6 @@
 import { Button } from "@components/Button";
 import { MealHeader } from "@components/MealHeader";
+import { useNavigation } from "@react-navigation/native";
 import {
   Container,
   Title,
@@ -18,9 +19,15 @@ export function ShowMeal() {
   const isGoodFeedBack = false;
   const pillText = isGoodFeedBack ? "dentro da dieta" : "fora da dieta";
 
+  const navigation = useNavigation();
+
+  function handleGoBack() {
+    navigation.navigate("home");
+  }
+
   return (
     <Container type={isGoodFeedBack ? "PRIMARY" : "SECONDARY"}>
-      <MealHeader title="Refeição" />
+      <MealHeader title="Refeição" onPress={handleGoBack}/>
 
       <Content>
         <Info>

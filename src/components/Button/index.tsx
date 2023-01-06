@@ -1,3 +1,4 @@
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import {
   ButtonTypeStyleProps,
   Container,
@@ -7,7 +8,7 @@ import {
   Title,
 } from "./styles";
 
-type Props = {
+type Props = TouchableOpacityProps & {
   title: string;
   type?: ButtonTypeStyleProps;
   showIcon?: boolean;
@@ -25,11 +26,12 @@ export function Button({
   type = "PRIMARY",
   showIcon = true,
   icon = "create",
+  ...rest
 }: Props) {
   const Icon = iconMap[icon];
 
   return (
-    <Container type={type}>
+    <Container {...rest} type={type}>
       {showIcon && <Icon type={type} />}
       <Title type={type}>{title}</Title>
     </Container>

@@ -1,3 +1,4 @@
+import { TouchableOpacityProps } from "react-native";
 import {
   BackArrow,
   Container,
@@ -7,7 +8,7 @@ import {
   Title,
 } from "./styles";
 
-type Props = {
+type Props = TouchableOpacityProps & {
   value: number;
   threshold?: number;
   actionArrow?: "SHOW" | "BACK";
@@ -17,11 +18,12 @@ export function Percent({
   value,
   threshold = 70,
   actionArrow = "SHOW",
+  ...rest
 }: Props) {
   const themeType = value >= threshold ? "PRIMARY" : "SECONDARY";
 
   return (
-    <Container type={themeType}>
+    <Container {...rest} type={themeType}>
       {actionArrow === "SHOW" ? (
         <DetailsArrow type={themeType} />
       ) : (

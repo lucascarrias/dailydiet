@@ -1,10 +1,16 @@
 import { ArrowLeft } from "phosphor-react-native";
+import { TouchableOpacity } from "react-native";
 import styled, { css } from "styled-components/native";
 
 export const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+`;
+
+export const BackArrowContainer = styled(TouchableOpacity)`
+  width: 30px;
+  height: 30px;
 `;
 
 export const BackArrow = styled(ArrowLeft).attrs(({ theme }) => ({

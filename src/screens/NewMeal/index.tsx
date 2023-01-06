@@ -1,3 +1,5 @@
+import { useNavigation  } from "@react-navigation/native";
+
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { MealHeader } from "@components/MealHeader";
@@ -13,9 +15,15 @@ import {
 } from "./styles";
 
 export function NewMeal() {
+  const navigation = useNavigation();
+
+  function handleGoBack() {
+    navigation.navigate("home");
+  }
+
   return (
     <Container>
-      <MealHeader title="Nova refeição"/>
+      <MealHeader title="Nova refeição" onPress={handleGoBack}/>
 
       <Content>
         <Input labelTitle="Nome" />

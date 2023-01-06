@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import styled, { css } from "styled-components/native";
 
 type StatusTypeStyleProps = "PRIMARY" | "SECONDARY";
@@ -7,7 +7,7 @@ type Props = {
   type: StatusTypeStyleProps;
 };
 
-export const Container = styled.View`
+export const Container = styled(TouchableOpacity)`
   padding: 14px 16px;
   border-width: 1px;
 
