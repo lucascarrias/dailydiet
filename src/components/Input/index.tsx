@@ -15,7 +15,7 @@ export function Input({ labelTitle, inputRef, inputHeight = 48, ...rest }: Props
     <Container inputHeight={inputHeight}>
       <Label>{labelTitle}</Label>
 
-      <FormInput
+      <FormInput 
         ref={inputRef}
         placeholderTextColor={COLORS.GRAY_300}
         inputHeight={inputHeight}

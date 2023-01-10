@@ -1,5 +1,6 @@
+import { useCallback, useState } from "react";
 import { SectionList } from "react-native";
-import { useNavigation  } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { Header } from "@components/Header";
 import { Percent } from "@components/Percent/Index";
@@ -8,14 +9,18 @@ import { Meal } from "@components/Meal";
 import { MealsByDateStorageDTO } from "@storage/meals/MealsByDateStorageDTO";
 import { ListEmpty } from "@components/ListEmpty";
 
-import { mealsGetAllByDate } from "@storage/meals/mealsGetAllByDate";
+import { mealsGroupedByDate } from "@storage/meals/mealsGroupedByDate";
 
 import { Container, CreateContainer, SectionHeader, SubTitle } from "./styles";
 
 export function Home() {
-  const data: MealsByDateStorageDTO[] = mealsGetAllByDate();
+  const [meals, setMeals] = useState<MealsByDateStorageDTO[]>([]);
 
   const navigation = useNavigation();
+
+  async function fetchMeals() {
+    setMeals(await mealsGroupedByDate())
+  }
 
   function handleShowStats() {
     navigation.navigate("stats");
@@ -29,10 +34,16 @@ export function Home() {
     navigation.navigate("show", {id: id});
   }
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchMeals();
+    }, [])
+  );
+
   return (
     <Container>
       <Header />
-      <Percent value={99.14} onPress={handleShowStats}/>
+      <Percent value={60} onPress={handleShowStats}/>
 
       <CreateContainer>
         <SubTitle>Refeições</SubTitle>
@@ -41,7 +52,7 @@ export function Home() {
       </CreateContainer>
 
       <SectionList
-        sections={data}
+        sections={meals}
         keyExtractor={(item, index) => item.title + index}
         renderItem={({ item }) => (
           <Meal 
@@ -58,7 +69,7 @@ export function Home() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           { paddingBottom: 100 },
-          data.length === 0 && { flex: 1 },
+          meals.length === 0 && { flex: 1 },
         ]}
       />
     </Container>
