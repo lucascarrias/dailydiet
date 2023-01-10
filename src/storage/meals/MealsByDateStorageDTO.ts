@@ -1,10 +1,6 @@
-export type Meal = {
-  time: string;
-  title: string;
-  isDiet: boolean;
-}
+import { MealStorageDTO } from "./MealStorageDTO";
 
 export type MealsByDateStorageDTO = {
   date: string;
-  data: Meal[];
+  data: MealStorageDTO[];
 }
