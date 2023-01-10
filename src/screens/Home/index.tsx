@@ -59,7 +59,7 @@ export function Home() {
             title={item.title}
             time={item.time}
             isDiet={item.isDiet}
-            onPress={() => handleShowMeal(item.title)}
+            onPress={() => item.id && handleShowMeal(item.id)}
           />
           )}
         renderSectionHeader={({ section: { date } }) => <SectionHeader>{date}</SectionHeader>}

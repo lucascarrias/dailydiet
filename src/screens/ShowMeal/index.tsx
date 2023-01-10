@@ -1,6 +1,12 @@
+import { useCallback, useState } from "react";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+
 import { Button } from "@components/Button";
 import { MealHeader } from "@components/MealHeader";
-import { useNavigation } from "@react-navigation/native";
+
+import { MealStorageDTO } from "@storage/meals/MealStorageDTO";
+import { getMeal } from "@storage/meals/getMeal";
+
 import {
   Container,
   Title,
@@ -15,35 +21,51 @@ import {
   RowSpace,
 } from "./styles";
 
-export function ShowMeal() {
-  const isGoodFeedBack = false;
-  const pillText = isGoodFeedBack ? "dentro da dieta" : "fora da dieta";
+type RouteParams = {
+  id: string;
+};
 
+export function ShowMeal() {
+  const [meal, setMeal] = useState<MealStorageDTO>()
+  
   const navigation = useNavigation();
+  const { params } = useRoute();
+
+  const { id } = params as RouteParams;
 
   function handleGoBack() {
     navigation.navigate("home");
   }
 
+  async function fetchMeal() {
+    setMeal(await getMeal(id))
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchMeal();
+    }, [])
+  );
+
   return (
-    <Container type={isGoodFeedBack ? "PRIMARY" : "SECONDARY"}>
+    <Container type={meal?.isDiet ? "PRIMARY" : "SECONDARY"}>
       <MealHeader title="Refeição" onPress={handleGoBack}/>
 
       <Content>
         <Info>
-          <Title>Sanduíche</Title>
+          <Title>{meal?.title}</Title>
           <SubTitle>
-            Sanduíche de pão integral com atum e salada de alface e tomate
+            {meal?.description}
           </SubTitle>
 
           <DateTitle>Data e hora</DateTitle>
-          <SubTitle>12/08/2022 às 16:00</SubTitle>
+          <SubTitle>{meal?.date} às {meal?.time}</SubTitle>
 
           <Pill>
-            <PillIcon type={isGoodFeedBack ? "PRIMARY" : "SECONDARY"}/>
+            <PillIcon type={meal?.isDiet ? "PRIMARY" : "SECONDARY"}/>
 
             <PillText>
-              {pillText}
+              {meal?.isDiet ? "dentro da dieta" : "fora da dieta"}
             </PillText>
           </Pill>
         </Info>
