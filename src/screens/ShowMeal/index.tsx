@@ -1,5 +1,9 @@
 import { useCallback, useState } from "react";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 
 import { Button } from "@components/Button";
 import { MealHeader } from "@components/MealHeader";
@@ -26,8 +30,8 @@ type RouteParams = {
 };
 
 export function ShowMeal() {
-  const [meal, setMeal] = useState<MealStorageDTO>()
-  
+  const [meal, setMeal] = useState<MealStorageDTO>();
+
   const navigation = useNavigation();
   const { params } = useRoute();
 
@@ -37,8 +41,12 @@ export function ShowMeal() {
     navigation.navigate("home");
   }
 
+  function handleEdit() {
+    navigation.navigate("edit", { id });
+  }
+
   async function fetchMeal() {
-    setMeal(await getMeal(id))
+    setMeal(await getMeal(id));
   }
 
   useFocusEffect(
@@ -49,20 +57,20 @@ export function ShowMeal() {
 
   return (
     <Container type={meal?.isDiet ? "PRIMARY" : "SECONDARY"}>
-      <MealHeader title="Refeição" onPress={handleGoBack}/>
+      <MealHeader title="Refeição" onPress={handleGoBack} />
 
       <Content>
         <Info>
           <Title>{meal?.title}</Title>
-          <SubTitle>
-            {meal?.description}
-          </SubTitle>
+          <SubTitle>{meal?.description}</SubTitle>
 
           <DateTitle>Data e hora</DateTitle>
-          <SubTitle>{meal?.date} às {meal?.time}</SubTitle>
+          <SubTitle>
+            {meal?.date} às {meal?.time}
+          </SubTitle>
 
           <Pill>
-            <PillIcon type={meal?.isDiet ? "PRIMARY" : "SECONDARY"}/>
+            <PillIcon type={meal?.isDiet ? "PRIMARY" : "SECONDARY"} />
 
             <PillText>
               {meal?.isDiet ? "dentro da dieta" : "fora da dieta"}
@@ -71,7 +79,7 @@ export function ShowMeal() {
         </Info>
 
         <Actions>
-          <Button title="Editar refeição" icon="edit" />
+          <Button title="Editar refeição" icon="edit" onPress={handleEdit} />
           <RowSpace />
           <Button title="Excluir refeição" icon="delete" type="SECONDARY" />
         </Actions>

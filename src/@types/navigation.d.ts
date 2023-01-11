@@ -9,6 +9,9 @@ export declare global {
       stats: undefined;
       show: {
         id: string;
+      },
+      edit: {
+        id: string;
       }
     }
   }

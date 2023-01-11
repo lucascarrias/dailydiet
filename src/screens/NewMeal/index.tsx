@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { format } from "date-fns";
 
 import { Button } from "@components/Button";
@@ -22,27 +26,38 @@ import {
   DateTimePickerAndroid,
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
+import { getMeal } from "@storage/meals/getMeal";
+import { mealUpdate } from "@storage/meals/mealUpdate";
 
 type AndroidMode = "date" | "time";
 
-export function NewMeal() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [isDiet, setIsDiet] = useState(true);
+type RouteParams = {
+  id: string;
+};
 
+export function NewMeal() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  const [meal, setMeal] = useState<MealStorageDTO>({
+    title: "",
+    date: "",
+    description: "",
+    time: "",
+    isDiet: true,
+  });
+
   const navigation = useNavigation();
+  const { params } = useRoute();
+
+  const { id } = params as RouteParams;
 
   const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate;
 
     if (selectedDate) {
       setCurrentDate(currentDate as Date);
-      setDate(format(currentDate as Date, "MM/dd/yyyy"));
+      setMeal({ ...meal, date: format(currentDate as Date, "MM/dd/yyyy") });
     }
   };
 
@@ -51,9 +66,21 @@ export function NewMeal() {
 
     if (selectedTime) {
       setCurrentTime(currentTime as Date);
-      setTime(format(currentTime as Date, "HH:mm"));
+      setMeal({ ...meal, time: format(currentTime as Date, "HH:mm") });
     }
   };
+
+  async function fetchMeal() {
+    if (!!id) {
+      setMeal((await getMeal(id)) as MealStorageDTO);
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchMeal();
+    }, [])
+  );
 
   const showMode = (currentMode: AndroidMode) => {
     if (currentMode == "date") {
@@ -96,37 +123,35 @@ export function NewMeal() {
 
   function validFormFields() {
     const fields = [
-      [title, "Nome"],
-      [description, "Descrição"],
-      [date, "Data"],
-      [time, "Hora"],
+      [meal.title, "Nome"],
+      [meal.description, "Descrição"],
+      [meal.date, "Data"],
+      [meal.time, "Hora"],
     ];
 
     return fields.every(([value, name]) => isTextInputValid(value, name));
   }
 
   function clearFormFields() {
-    setTitle("");
-    setDescription("");
-    setDate("");
-    setTime("");
-    setIsDiet(true);
+    setMeal({
+      title: "",
+      date: "",
+      description: "",
+      time: "",
+      isDiet: true,
+    });
   }
 
-  async function handleAddMeal() {
+  async function handleSubmit() {
     if (!validFormFields()) return;
 
-    const newMeal: MealStorageDTO = {
-      date,
-      isDiet,
-      time,
-      title,
-      description,
-    };
-
     try {
-      await mealCreate(newMeal);
-      navigation.navigate("created", { isGoodFeedback: isDiet });
+      if (!!id) {
+        await mealUpdate(id, meal);
+      } else {
+        await mealCreate(meal);
+      }
+      navigation.navigate("created", { isGoodFeedback: meal.isDiet });
       clearFormFields();
     } catch (error) {
       console.log(error);
@@ -138,12 +163,16 @@ export function NewMeal() {
       <MealHeader title="Nova refeição" onPress={handleGoBack} />
 
       <Content>
-        <Input labelTitle="Nome" onChangeText={setTitle} value={title} />
+        <Input
+          labelTitle="Nome"
+          onChangeText={(text) => setMeal({ ...meal, title: text })}
+          value={meal.title}
+        />
         <Input
           labelTitle="Descrição"
           inputHeight={100}
-          onChangeText={setDescription}
-          value={description}
+          onChangeText={(text) => setMeal({ ...meal, description: text })}
+          value={meal.description}
           multiline
           numberOfLines={3}
           style={{ textAlignVertical: "top" }}
@@ -152,15 +181,15 @@ export function NewMeal() {
         <DateTimeSubForm>
           <Input
             labelTitle="Data"
-            onChangeText={setDate}
-            value={date}
+            onChangeText={(text) => setMeal({ ...meal, date: text })}
+            value={meal.date}
             onPressIn={showDatepicker}
           />
           <ColumnSpace />
           <Input
             labelTitle="Hora"
-            onChangeText={setTime}
-            value={time}
+            onChangeText={(text) => setMeal({ ...meal, time: text })}
+            value={meal.time}
             onPressIn={showTimepicker}
           />
         </DateTimeSubForm>
@@ -171,15 +200,15 @@ export function NewMeal() {
           <DietSelectInputContainer>
             <SelectButton
               title="Sim"
-              onPress={() => setIsDiet(true)}
-              isSelected={isDiet}
+              onPress={() => setMeal({ ...meal, isDiet: true })}
+              isSelected={meal.isDiet}
             />
             <ColumnSpace />
             <SelectButton
               title="Não"
               type="SECONDARY"
-              onPress={() => setIsDiet(false)}
-              isSelected={!isDiet}
+              onPress={() => setMeal({ ...meal, isDiet: false })}
+              isSelected={!meal.isDiet}
             />
           </DietSelectInputContainer>
         </DietSelectContainer>
@@ -187,7 +216,7 @@ export function NewMeal() {
         <Button
           title="Cadastrar refeição"
           showIcon={false}
-          onPress={handleAddMeal}
+          onPress={handleSubmit}
         />
       </Content>
     </Container>

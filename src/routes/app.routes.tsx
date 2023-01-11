@@ -14,6 +14,8 @@ export function AppRoutes() {
 
       <Screen name="new" component={NewMeal} />
 
+      <Screen name="edit" component={NewMeal} />
+
       <Screen name="created" component={CreatedMeal} />
 
       <Screen name="show" component={ShowMeal} />
