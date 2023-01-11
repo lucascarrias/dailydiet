@@ -24,6 +24,8 @@ import {
   Actions,
   RowSpace,
 } from "./styles";
+import { Alert } from "react-native";
+import { mealDelete } from "@storage/meals/deleteMeal";
 
 type RouteParams = {
   id: string;
@@ -45,8 +47,20 @@ export function ShowMeal() {
     navigation.navigate("edit", { id });
   }
 
+  async function handleMealRemove() {
+    Alert.alert("Remover", "Deseja remover a refeição?", [
+      { text: "Não", style: "cancel" },
+      { text: "Sim", onPress: mealRemove },
+    ]);
+  }
+
   async function fetchMeal() {
     setMeal(await getMeal(id));
+  }
+
+  async function mealRemove() {
+    await mealDelete(id);
+    handleGoBack();
   }
 
   useFocusEffect(
@@ -81,7 +95,7 @@ export function ShowMeal() {
         <Actions>
           <Button title="Editar refeição" icon="edit" onPress={handleEdit} />
           <RowSpace />
-          <Button title="Excluir refeição" icon="delete" type="SECONDARY" />
+          <Button title="Excluir refeição" icon="delete" type="SECONDARY" onPress={handleMealRemove}/>
         </Actions>
       </Content>
     </Container>
