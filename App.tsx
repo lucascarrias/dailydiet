@@ -10,6 +10,7 @@ import { Text } from "react-native";
 import { Routes } from './src/routes';
 
 import theme from "./src/theme";
+import { Loading } from "@components/Loading";
 
 
 export default function App() {
@@ -23,7 +24,7 @@ export default function App() {
         translucent
       />
 
-      {fontsLoaded ? <Routes /> : <Text>Loading</Text>}
+      {fontsLoaded ? <Routes /> : <Loading />}
     </ThemeProvider>
   );
 }

@@ -50,10 +50,10 @@ export function NewMeal() {
   const navigation = useNavigation();
   const { params } = useRoute();
 
-  const id = undefined;
+  let id: string = "";
   
   if (!!params) {
-    const { id } = params as RouteParams;
+    id = (params as RouteParams).id;
   }
 
   const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
