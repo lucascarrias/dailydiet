@@ -50,7 +50,11 @@ export function NewMeal() {
   const navigation = useNavigation();
   const { params } = useRoute();
 
-  const { id } = params as RouteParams;
+  const id = undefined;
+  
+  if (!!params) {
+    const { id } = params as RouteParams;
+  }
 
   const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate;

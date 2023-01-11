@@ -10,16 +10,27 @@ import { MealsByDateStorageDTO } from "@storage/meals/MealsByDateStorageDTO";
 import { ListEmpty } from "@components/ListEmpty";
 
 import { mealsGroupedByDate } from "@storage/meals/mealsGroupedByDate";
+import { mealsGetAll } from "@storage/meals/mealsGetAll";
+import { buildMealsStatistics, MealsStatistics } from "@storage/meals/buildMealsStatistics";
 
 import { Container, CreateContainer, SectionHeader, SubTitle } from "./styles";
 
 export function Home() {
   const [meals, setMeals] = useState<MealsByDateStorageDTO[]>([]);
+  const [stats, setStats] = useState<MealsStatistics>({
+    dietPercentage: 0,
+    totalMeals: 0,
+    dietMeals: 0,
+    notDietMeals: 0,
+    bestDietSequence: 0
+  });
 
   const navigation = useNavigation();
 
   async function fetchMeals() {
-    setMeals(await mealsGroupedByDate())
+    const storedData = await mealsGetAll();
+    setMeals(mealsGroupedByDate(storedData));
+    setStats(buildMealsStatistics(storedData))
   }
 
   function handleShowStats() {
@@ -43,7 +54,7 @@ export function Home() {
   return (
     <Container>
       <Header />
-      <Percent value={60} onPress={handleShowStats}/>
+      <Percent value={stats?.dietPercentage} onPress={handleShowStats}/>
 
       <CreateContainer>
         <SubTitle>Refeições</SubTitle>

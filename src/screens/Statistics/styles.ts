@@ -1,9 +1,16 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled, { css } from "styled-components/native";
 
-export const Container = styled(SafeAreaView)`
+export type PercentTypeStyleProps = "PRIMARY" | "SECONDARY";
+
+type Props = {
+  type: PercentTypeStyleProps;
+};
+
+export const Container = styled(SafeAreaView)<Props>`
   flex: 1;
-  background-color: ${({ theme }) => theme.COLORS.GREEN_LIGHT};
+  background-color: ${({ theme, type }) =>
+    type === "PRIMARY" ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
   padding: 24px 24px 0;
 `;
 
@@ -31,7 +38,7 @@ export const DataFooter = styled.View`
 
 export const BlankColumn = styled.View`
   width: 8px;
-`
+`;
 export const ContentTitle = styled.Text`
   ${({ theme }) => css`
     font-size: ${theme.FONT_SIZE.SM};

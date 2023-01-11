@@ -1,13 +1,14 @@
 import { orderBy, sortBy } from "lodash";
 import { MealsByDateStorageDTO } from "./MealsByDateStorageDTO";
 import { mealsGetAll } from "./mealsGetAll";
+import { MealStorageDTO } from "./MealStorageDTO";
 
-export async function mealsGroupedByDate(): Promise<MealsByDateStorageDTO[]> {
-  const storedData = await mealsGetAll();
-
+export function mealsGroupedByDate(
+  meals: MealStorageDTO[]
+): MealsByDateStorageDTO[] {
   const groupedData: MealsByDateStorageDTO[] = [];
 
-  storedData.forEach((meal) => {
+  meals.forEach((meal) => {
     const groupIndex = groupedData.findIndex((item) => item.date === meal.date);
 
     if (groupIndex !== -1) {

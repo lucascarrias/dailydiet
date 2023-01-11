@@ -1,34 +1,72 @@
-import { useNavigation  } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import { Card } from "@components/Card";
 import { Percent } from "@components/Percent/Index";
-import { BlankColumn, Container, Content, ContentTitle, Data, DataFooter } from "./styles";
+import {
+  BlankColumn,
+  Container,
+  Content,
+  ContentTitle,
+  Data,
+  DataFooter,
+} from "./styles";
+import { useCallback, useState } from "react";
+import { mealsGetAll } from "@storage/meals/mealsGetAll";
+import {
+  buildMealsStatistics,
+  MealsStatistics,
+} from "@storage/meals/buildMealsStatistics";
 
 export function Statistics() {
+  const [stats, setStats] = useState<MealsStatistics>({
+    dietPercentage: 0,
+    totalMeals: 0,
+    dietMeals: 0,
+    notDietMeals: 0,
+    bestDietSequence: 0,
+  });
 
   const navigation = useNavigation();
 
-  function handleGoBack(){
+  function handleGoBack() {
     navigation.navigate("home");
   }
 
+  async function fetchMeals() {
+    const storedData = await mealsGetAll();
+    setStats(buildMealsStatistics(storedData));
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchMeals();
+    }, [])
+  );
+
   return (
-    <Container>
-      <Percent value={99.79} actionArrow="BACK" onPress={handleGoBack}/>
+    <Container type={stats.dietPercentage >= 70 ? "PRIMARY" : "SECONDARY"}>
+      <Percent
+        value={stats.dietPercentage}
+        actionArrow="BACK"
+        onPress={handleGoBack}
+      />
 
       <Content>
         <ContentTitle>Estatísticas gerais</ContentTitle>
 
         <Data>
           <Card
-            title="22"
+            title={stats.bestDietSequence + ""}
             subTitle="melhor sequência de pratos dentro da dieta"
           />
-          <Card title="109" subTitle="refeições registradas" />
+          <Card
+            title={stats.totalMeals + ""}
+            subTitle="refeições registradas"
+          />
 
           <DataFooter>
             <Card
-              title="99"
+              title={stats.dietMeals + ""}
               subTitle="refeições dentro da dieta"
               type="PRIMARY"
             />
@@ -36,7 +74,7 @@ export function Statistics() {
             <BlankColumn />
 
             <Card
-              title="10"
+              title={stats.notDietMeals + ""}
               subTitle="refeições fora o da dieta"
               type="SECONDARY"
             />
